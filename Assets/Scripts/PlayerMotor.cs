@@ -37,7 +37,7 @@ public class PlayerMotor : MonoBehaviour
     {
         if(rotation !=Quaternion.identity)
         {
-            transform.rotation=rotation;
+            rb.MoveRotation(rotation);
         }
     }
 
