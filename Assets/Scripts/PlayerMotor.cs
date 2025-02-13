@@ -37,7 +37,7 @@ public class PlayerMotor : MonoBehaviour
     {
         if(rotation!=Vector3.zero)
         {
-            rb.MoveRotation(Quaternion.Euler(rotation));
+            rb.MoveRotation(Quaternion.Euler(rotation)*rb.rotation);
         }
     }
 
