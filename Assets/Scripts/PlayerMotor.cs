@@ -4,7 +4,7 @@ public class PlayerMotor : MonoBehaviour
 {
     private Rigidbody rb;
     private Vector3 velocity=Vector3.zero;
-    private Vector3 rotation =Vector3.zero;
+    private Quaternion rotation = Quaternion.identity;
     [SerializeField] float speed = 1000f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,9 +15,9 @@ public class PlayerMotor : MonoBehaviour
     {
         velocity = _velocity;
     }
-    public void CameraRot(Vector3 _rotation)
+    public void CameraRot(float angle)
     {
-        rotation = _rotation;
+        rotation *= Quaternion.Euler(0,angle,0);
     }
     
     void FixedUpdate()
@@ -35,9 +35,9 @@ public class PlayerMotor : MonoBehaviour
     }
     private void PerformRotation()
     {
-        if(rotation!=Vector3.zero)
+        if(rotation !=Quaternion.identity)
         {
-            rb.MoveRotation(Quaternion.Euler(rotation)*rb.rotation);
+            transform.rotation=rotation;
         }
     }
 

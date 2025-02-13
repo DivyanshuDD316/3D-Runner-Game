@@ -6,6 +6,9 @@ public class PlayerManager : MonoBehaviour
     //[SerializeField] private float sensitivity = 100f;
     private PlayerMotor motor;
 
+    private Vector2 mouseStartingPosition;
+    private Vector2 mouseEndingPosition;
+
     void Start()
     {
         motor = GetComponent<PlayerMotor>();
@@ -16,6 +19,7 @@ public class PlayerManager : MonoBehaviour
         CallMovement();
         CallRotation();
     }
+    
     void CallMovement()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -24,14 +28,20 @@ public class PlayerManager : MonoBehaviour
     }
     void CallRotation()
     {
-        if(Input.GetAxis("Mouse X")>1f)
+        if(Input.GetMouseButtonDown(0))
         {
-            motor.CameraRot(new Vector3(0,90f,0));
+            mouseStartingPosition = Input.mousePosition;
         }
-        else if(Input.GetAxis("Mouse X")<-1f)
+        if(Input.GetMouseButtonUp(0))
         {
-            motor.CameraRot(new Vector3(0,-90f,0));
+            mouseEndingPosition = Input.mousePosition;
+            RotationAngle();
         }
+    }
+    void RotationAngle()
+    {
+        if(mouseEndingPosition.x-mouseStartingPosition.x>1f) motor.CameraRot(90f);
+        else if(mouseEndingPosition.x-mouseStartingPosition.x<-1f) motor.CameraRot(-90f);
     }
 
 }
