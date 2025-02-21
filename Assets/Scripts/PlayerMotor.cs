@@ -5,8 +5,9 @@ public class PlayerMotor : MonoBehaviour
     private Rigidbody rb;
     private Vector3 velocity=Vector3.zero;
     private Quaternion rotation = Quaternion.identity;
-    [SerializeField] float speed = 100f;
-    [SerializeField] float jumpForce = 1000f;
+    private bool isGrounded = false;
+    [SerializeField] float moveSpeed = 100f;
+    [SerializeField] float jumpForce = 500f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,15 +21,29 @@ public class PlayerMotor : MonoBehaviour
     {
         rotation *= Quaternion.Euler(0,angle,0);
     }
+    public void IsJumping()
+    {
+        isGrounded = true;
+    }
     
     void FixedUpdate()
     {
         PlayerMovement();
         PerformRotation();
+        if(Input.GetButtonDown("Jump"))
+        {
+            Debug.Log("Button is Pressed");
+            if(isGrounded)
+            {
+                rb.AddForce(jumpForce * Vector3.up * Time.deltaTime, ForceMode.Impulse);
+                isGrounded = false;
+                Debug.Log("Player Jumpped");
+            }
+        }
     }
     private void PlayerMovement()
     {
-        rb.MovePosition(rb.position + transform.forward*speed*Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + transform.forward*moveSpeed*Time.fixedDeltaTime);
         if(velocity!=Vector3.zero)
         {
             rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
@@ -40,10 +55,6 @@ public class PlayerMotor : MonoBehaviour
         {
             rb.MoveRotation(rotation);
         }
-    }
-    public void Jump()
-    {
-        rb.AddForce(jumpForce*Vector3.up, ForceMode.Impulse);
     }
 
 }

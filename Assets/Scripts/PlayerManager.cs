@@ -8,7 +8,6 @@ public class PlayerManager : MonoBehaviour
 
     private Vector2 mouseStartingPosition;
     private Vector2 mouseEndingPosition;
-    bool isGrounded=false;
 
     void Start()
     {
@@ -19,13 +18,6 @@ public class PlayerManager : MonoBehaviour
     {
         CallMovement();
         CallRotation();
-        if(Input.GetButtonDown("Jump"))
-        {
-            if(isGrounded)
-            {
-                motor.Jump();
-            }
-        }
     }
     
     void CallMovement()
@@ -51,11 +43,13 @@ public class PlayerManager : MonoBehaviour
         if(mouseEndingPosition.x-mouseStartingPosition.x>1f) motor.CameraRot(90f);
         else if(mouseEndingPosition.x-mouseStartingPosition.x<-1f) motor.CameraRot(-90f);
     }
-    private void OnCollisionEnter(Collision other)
+    
+    void OnCollisionEnter(Collision other)
     {
         if(other.gameObject.CompareTag("Ground"))
         {
-            isGrounded=true;
+            Debug.Log("Player is collided with Ground");
+            motor.IsJumping();
         }
     }
 
