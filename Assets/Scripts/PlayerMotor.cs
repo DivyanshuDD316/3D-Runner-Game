@@ -5,7 +5,8 @@ public class PlayerMotor : MonoBehaviour
     private Rigidbody rb;
     private Vector3 velocity=Vector3.zero;
     private Quaternion rotation = Quaternion.identity;
-    [SerializeField] float speed = 1000f;
+    [SerializeField] float speed = 100f;
+    [SerializeField] float jumpForce = 1000f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,7 +28,7 @@ public class PlayerMotor : MonoBehaviour
     }
     private void PlayerMovement()
     {
-        rb.AddForce(transform.forward*speed*Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + transform.forward*speed*Time.fixedDeltaTime);
         if(velocity!=Vector3.zero)
         {
             rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
@@ -39,6 +40,10 @@ public class PlayerMotor : MonoBehaviour
         {
             rb.MoveRotation(rotation);
         }
+    }
+    public void Jump()
+    {
+        rb.AddForce(jumpForce*Vector3.up, ForceMode.Impulse);
     }
 
 }
