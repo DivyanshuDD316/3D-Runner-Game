@@ -8,13 +8,14 @@ public class PlayerManager : MonoBehaviour
 
     private Vector2 mouseStartingPosition;
     private Vector2 mouseEndingPosition;
+    private float swipeThreshold=5f;
 
     void Start()
     {
         motor = GetComponent<PlayerMotor>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         CallMovement();
         CallRotation();
@@ -40,8 +41,15 @@ public class PlayerManager : MonoBehaviour
     }
     void RotationAngle()
     {
-        if(mouseEndingPosition.x-mouseStartingPosition.x>1f) motor.CameraRot(90f);
-        else if(mouseEndingPosition.x-mouseStartingPosition.x<-1f) motor.CameraRot(-90f);
+        float swipeDistanceX = mouseEndingPosition.x - mouseStartingPosition.x;
+
+        if(Mathf.Abs(swipeDistanceX)>swipeThreshold)
+        {
+            if(swipeDistanceX>0f)
+            motor.CameraRot(90f);
+            else
+            motor.CameraRot(-90f);
+        }
     }
     
     void OnCollisionEnter(Collision other)
