@@ -10,11 +10,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private float gravity = -9.81f;
     private bool isGrounded = false;
+    public GameObject gameOverPanel;
+    public PlayerController playerController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         control = GetComponent<CharacterController>();
+        gameOverPanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,4 +52,21 @@ public class PlayerController : MonoBehaviour
         float targetRotation = Input.GetAxis("Mouse X") * sensitivity;
         transform.Rotate(targetRotation * Vector3.up);
     }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("Finish"))
+        {
+            gameOverPanel.SetActive(true);
+            playerController.enabled=false;
+        }
+    }
+    private void OnCollisionEnter(Collision other)
+    {Debug.Log("Collided");
+        if(other.gameObject.CompareTag("Obstacle"))
+        {
+            
+        }
+    }
+    
 }
